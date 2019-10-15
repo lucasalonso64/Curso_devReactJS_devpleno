@@ -19,7 +19,7 @@ function App() {
     if (running) {
       timer = setInterval(() => {
         setTempo(old => old + 1)
-      }, 1000)
+      }, 10)
 
     }
     return () => {
