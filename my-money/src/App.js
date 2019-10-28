@@ -1,48 +1,23 @@
-import React, { useState, useEffect, useReducer } from 'react';
-import axios from 'axios'
+import React from 'react';
+import useGet from './useGet'
 
 const url = 'https://mymoney-alonsosistemas.firebaseio.com/movimentacoes/2019-08.json'
-const reducer = (state, action) => {
-  console.log('state', state, 'action', action)
-  if (action.type === 'REQUEST'){
-    return {
-      ...state,
-      loading: true
-    }
-  }
-  if(action.type === 'SUCCESS'){
-    return {
-      ...state,
-      loading: false,
-      data: action.data
-    }
-  }
 
-  return state
-}
 
 function App() {
-  const [data, dispatch] = useReducer(reducer, {
-    loading: true,
-    data: {}
-  })
-  useEffect(() => {
-    dispatch({ type: 'REQUEST' })
-    axios
-      .get(url)
-      .then(res => {
-        dispatch({ type: 'SUCCESS', data: res.data })
-      })
+  const data = useGet(url)
+  const data2 = useGet('http://httpbin.org/ip')
 
-  }, [])
+
 
   return (
-    <div >
-      <h1>My Money</h1>
+    <div>
+      <h1>MyMoney</h1>
       {JSON.stringify(data)}
-      {<p>Loading...</p>}
-    </div>
-  );
-}
+      {data.loading && <p>Loading...</p>}
+     <pre>{JSON.stringify(data2)}</pre>
 
+    </div>
+  )
+}
 export default App;
