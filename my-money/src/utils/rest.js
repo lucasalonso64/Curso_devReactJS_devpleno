@@ -2,6 +2,7 @@ import { useReducer, useEffect } from 'react'
 
 import axios from 'axios'
 
+
 const INITIAL_STATE = {
     loading: false,
     data: {}
@@ -14,7 +15,7 @@ const reducer = (state, action) => {
             loading: true
         }
     }
-    if (action.type === 'SUCESS') {
+    if (action.type === 'SUCCESS') {
         return {
             ...state,
             loading: false,
@@ -22,8 +23,9 @@ const reducer = (state, action) => {
         }
     }
     return state
-}
 
+
+}
 const init = baseURL => {
     const useGet = resource => {
         const [data, dispatch] = useReducer(reducer, INITIAL_STATE)
@@ -32,7 +34,7 @@ const init = baseURL => {
             axios
                 .get(baseURL + resource + '.json')
                 .then(res => {
-                    dispatch({ type: 'SUCESS', data: res.data })
+                    dispatch({ type: 'SUCCESS', data: res.data })
                 })
         }, [])
         return data
@@ -81,9 +83,5 @@ const useDelete = () => {
     }
 
 }
-
-
-
-
 
 export default init
