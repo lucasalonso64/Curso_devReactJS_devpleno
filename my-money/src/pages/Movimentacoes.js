@@ -7,11 +7,12 @@ import Rest from '../utils/rest'
 
 //const baseURL = 'https://mymoney-lkk.firebaseio.com/';
 const baseURL = 'https://mymoney-alonsosistemas.firebaseio.com/'
-const { useGet, usePost } = Rest(baseURL);
+const { useGet, usePost, useDelete } = Rest(baseURL);
 
 const Movimentacoes = ({ match }) => {
   const data = useGet(`movimentacoes/${match.params.data}`)
   const [postData, salvar ] = usePost(`movimentacoes/${match.params.data}`)
+  const [removeData, remover] = useDelete()
   const [descricao, setDescricao] = useState('')
   const [valor, setValor] = useState(0)
 
@@ -23,12 +24,18 @@ const Movimentacoes = ({ match }) => {
     setValor(parseFloat(evt.target.value))
   }
 
-  const salvarMovimentacoes = () => {
-      salvar ({
+  const salvarMovimentacoes = async() => {
+    await salvar ({
         descricao,
         valor
-
       })
+      setDescricao('')
+      setValor(0)
+      data.refetch()
+  }
+  const removerMovimentacao = async(id) => {
+    await remover(`movimentacoes/${match.params.data}/${id}`) 
+    data.refetch()
   }
 
   return (
@@ -50,7 +57,10 @@ const Movimentacoes = ({ match }) => {
                 return (
                   <tr>
                     <td>{data.data[movimentacao].descricao}</td>
-                    <td>{data.data[movimentacao].valor} </td>
+                    <td>
+                      {data.data[movimentacao].valor} 
+                      <button onClick={ () => removerMovimentacao(movimentacao)}>-</button>
+                      </td>
                   </tr>
                 )
               })
