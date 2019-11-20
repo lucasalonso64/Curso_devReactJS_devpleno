@@ -1,16 +1,35 @@
 import React from 'react'
 
+const minAno = 2019
+const maxAno = 2022
+
 const AdicionarMes = () => {
-    return (
+    const anos = []
+    const meses = []
+    for(let i = minAno; i<= maxAno; i++){
+        anos.push(i)
+    }
+    for(let i = 1; i <=12; i++){
+        meses.push(i)
+    }
+
+    const zeroPad = num => {
+        if(num < 10){
+            return '0'+num
+        }
+        return num
+    }
+      return (
         <>
         <h2>Adicionar mês</h2>
         <select>
-            <option value='2019'>2019</option>
-            <option value='2020'>2020</option>
+            {anos.map(ano => <option key={ano} value={ano}>{ano}</option>)}            
+            
         </select>
         <select>
-            <option value='01'>01</option>
-            <option value='02'>02</option>
+            { meses.map(zeroPad).map(mes =><option  key={mes}  value={mes }>{mes}</option>)}
+            
+            
         </select>
         <button>Adicionar mês</button>
         </>
